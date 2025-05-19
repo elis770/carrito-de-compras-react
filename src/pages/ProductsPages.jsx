@@ -15,6 +15,7 @@ export const ProductsPages = () => {
         return (
           <CartComponets
             key={product.id}
+            id={product.id}
             image={product.image}
             title={product.title}
             description={product.description}

@@ -10,13 +10,17 @@ const cartReducer = (state = inicialState, action = {}) => {
         case "[Cart] Remove Product":
             return state.filter((product) => product.id !== action.payload);
         case "[Cart] Increment Quantity":
-            return state.map((product) =>
-                product.id === action.payload ? {...product, quantity: product.quantity + 1} : product
-            );
+            return state.map(product => {
+                    const cant = product.quantity + 1
+                    if (product.id === action.payload) return {...product, quantity: cant}
+                    return product
+                });
         case "[Cart] Decrement Quantity":
-            return state.map((product) =>
-                product.id === action.payload ? {...product, quantity: product.quantity - 1} : product
-            );
+           return state.map(product => {
+                    const cant = product.quantity - 1
+                    if (product.id === action.payload && product.quantity > 1) return {...product, quantity: cant}
+                    return product
+                });
         default:
             return state;
     }
@@ -40,16 +44,16 @@ export const CartProvider = ({children}) => {
         };
         dispatch(action);
     };
-    const incrementQuatity = (id) => {
+    const incrementQuantity = (id) => {
         const action = {
-            type: "[Cart] Increment Quatity",
+            type: "[Cart] Increment Quantity",
             payload: id,
         };
         dispatch(action);
     };
-    const decrementQuatity = (id) => {
+    const decrementQuantity = (id) => {
         const action = {
-            type: "[Cart] Decrement Quatity",
+            type: "[Cart] Decrement Quantity",
             payload: id,
         };
         dispatch(action);
@@ -61,8 +65,8 @@ export const CartProvider = ({children}) => {
                 shoppingList,
                 addProduct,
                 removeProduct,
-                incrementQuatity,
-                decrementQuatity,
+                incrementQuantity,
+                decrementQuantity,
             }}
         >
             {children}
